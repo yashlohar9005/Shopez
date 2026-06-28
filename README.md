@@ -127,4 +127,4 @@ For deeper dives into the architecture and API, please refer to the extensive do
 - **Database Connection:** Ensure your current IP address is whitelisted in MongoDB Atlas.
 
 ---
-*Developed with ❤️ as a portfolio showcase.*
+*Developed with ❤️ as a Yash Lohar.*
