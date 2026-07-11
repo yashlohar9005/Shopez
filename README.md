@@ -2,7 +2,7 @@
 
 Welcome to the **SHOPEZ** repository! SHOPEZ is a full-stack, enterprise-grade e-commerce application built with the MERN stack (MongoDB, Express, React, Node.js). It offers a seamless, secure, and modern shopping experience with advanced features like Razorpay payment integration, Cloudinary image management, and a robust admin dashboard.
 
-![SHOPEZ Banner](https://via.placeholder.com/1200x400?text=SHOPEZ+E-Commerce+Platform)
+
 
 ---
 
