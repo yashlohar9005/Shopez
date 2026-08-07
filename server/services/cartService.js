@@ -46,14 +46,15 @@ class CartService {
       cart = new Cart({ user: userId, items: [] });
     }
 
-    // 4. Check if a coupon is active to recalculate discount
+    // 4. Add item to cart
+    await cart.addItem(productId, quantity, product.price);
+
+    // 5. Recalculate discount if coupon is active
     if (cart.coupon) {
       await this._recalculateDiscount(cart);
-    } else {
-      await cart.addItem(productId, quantity, product.price);
     }
 
-    // 5. Return populated cart
+    // 6. Return populated cart
     return this.getCart(userId);
   }
 

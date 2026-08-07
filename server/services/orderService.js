@@ -6,6 +6,7 @@
 const Order = require('../models/Order');
 const Cart = require('../models/Cart');
 const Product = require('../models/Product');
+const Coupon = require('../models/Coupon');
 const Notification = require('../models/Notification');
 const ApiError = require('../utils/ApiError');
 
@@ -59,7 +60,18 @@ class OrderService {
       });
     }
 
-    // 6. Clear user's cart
+    // 6. Update coupon usage count if coupon was applied
+    if (cart.coupon) {
+      try {
+        await Coupon.findByIdAndUpdate(cart.coupon, {
+          $inc: { usedCount: 1 }
+        });
+      } catch (err) {
+        console.error('Failed to update coupon usage count:', err);
+      }
+    }
+
+    // 7. Clear user's cart
     await cart.clearCart();
     
     // 7. Create Notification

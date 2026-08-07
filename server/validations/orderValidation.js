@@ -42,6 +42,16 @@ exports.updateOrderStatusValidation = [
   body('status')
     .notEmpty()
     .withMessage('Order status is required')
-    .isIn(['processing', 'shipped', 'delivered', 'cancelled'])
+    .isIn([
+      'pending',
+      'confirmed',
+      'processing',
+      'shipped',
+      'out_for_delivery',
+      'delivered',
+      'cancelled',
+      'returned',
+      'refunded',
+    ])
     .withMessage('Invalid order status'),
 ];

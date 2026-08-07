@@ -41,10 +41,18 @@ const protect = asyncHandler(async (req, res, next) => {
       throw new ApiError('The user belonging to this token no longer exists', 401);
     }
 
-    // 6. Attach user to request object
+    // 6. Check if user account is blocked
+    if (user.isBlocked) {
+      throw new ApiError('Your account has been suspended. Please contact support.', 403);
+    }
+
+    // 7. Attach user to request object
     req.user = user;
     next();
   } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
     // Distinguish between expired and malformed tokens
     if (error.name === 'TokenExpiredError') {
       throw new ApiError('Your token has expired, please login again', 401);

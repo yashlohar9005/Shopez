@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    const field = Object.keys(err.keyValue)[0];
+    const field = err.keyValue ? Object.keys(err.keyValue)[0] : 'field';
     const message = `Duplicate field value entered for: ${field}. Please use another value.`;
     error = new ApiError(message, 400);
   }
@@ -39,7 +39,7 @@ const errorHandler = (err, req, res, next) => {
 
   // Default to 500 server error if status code not set
   const statusCode = error.statusCode || 500;
-  
+
   // Hide internal server error messages in production
   let message = error.message || 'Internal Server Error';
   if (process.env.NODE_ENV === 'production' && statusCode === 500 && !error.isOperational) {

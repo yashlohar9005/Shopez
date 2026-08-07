@@ -28,12 +28,7 @@ exports.getOrders = asyncHandler(async (req, res) => {
 });
 
 exports.getOrderById = asyncHandler(async (req, res) => {
-  const order = await orderService.getOrderById(req.params.id);
-  // Ensure the order belongs to the user
-  if (order.user._id.toString() !== req.user._id.toString()) {
-    res.status(403);
-    throw new Error('Not authorized to view this order');
-  }
+  const order = await orderService.getOrderById(req.params.id, req.user._id, req.user.role);
   res.status(200).json(new ApiResponse(200, order, 'Order details retrieved'));
 });
 
