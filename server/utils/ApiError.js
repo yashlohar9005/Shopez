@@ -16,13 +16,24 @@ class ApiError extends Error {
    * @param {Array} errors - Array of validation errors (optional)
    * @param {string} stack - Custom stack trace (optional)
    */
-  constructor(message = 'Something went wrong', statusCode = 500, errors = [], stack = '') {
+  constructor(arg1 = 'Something went wrong', arg2 = 500, errors = [], stack = '') {
+    let message = 'Something went wrong';
+    let statusCode = 500;
+
+    if (typeof arg1 === 'number') {
+      statusCode = arg1;
+      message = typeof arg2 === 'string' ? arg2 : 'Something went wrong';
+    } else {
+      message = typeof arg1 === 'string' ? arg1 : 'Something went wrong';
+      statusCode = typeof arg2 === 'number' ? arg2 : 500;
+    }
+
     super(message);
     this.statusCode = statusCode;
     this.data = null;
     this.message = message;
     this.success = false;
-    this.errors = errors;
+    this.errors = Array.isArray(errors) ? errors : [];
 
     // Flag to distinguish operational errors (e.g. invalid input)
     // from programming bugs (e.g. undefined variable)

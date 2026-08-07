@@ -198,16 +198,6 @@ const orderSchema = new mongoose.Schema(
       min: [0, 'Total price cannot be negative'],
       default: 0,
     },
-    shippingPrice: {
-      type: Number,
-      default: 0,
-      min: [0, 'Shipping price cannot be negative'],
-    },
-    totalPrice: {
-      type: Number,
-      min: [0, 'Total price cannot be negative'],
-      default: 0,
-    },
 
     // --- Order Status ---
     orderStatus: {

@@ -938,6 +938,57 @@ class AdminService {
     return result;
   }
 
+  /**
+   * Helper: Get monthly aggregated data for the last N months.
+   */
+  async _getMonthlyData(type, months = 12) {
+    const startDate = new Date();
+    startDate.setMonth(startDate.getMonth() - (months - 1));
+    startDate.setDate(1);
+    startDate.setHours(0, 0, 0, 0);
+
+    const matchStage = { createdAt: { $gte: startDate } };
+    if (type === 'revenue') {
+      matchStage.paymentStatus = 'paid';
+      matchStage.orderStatus = { $ne: 'cancelled' };
+    }
+
+    const data = await Order.aggregate([
+      { $match: matchStage },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+          },
+          ...(type === 'revenue'
+            ? { total: { $sum: '$totalPrice' } }
+            : { total: { $sum: 1 } }),
+        },
+      },
+      { $sort: { '_id.year': 1, '_id.month': 1 } },
+    ]);
+
+    // Fill in missing months
+    const result = [];
+    const now = new Date();
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    for (let i = months - 1; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const year = d.getFullYear();
+      const month = d.getMonth() + 1;
+      const found = data.find(
+        (item) => item._id.year === year && item._id.month === month
+      );
+      result.push({
+        label: `${monthNames[month - 1]} ${year}`,
+        value: found ? found.total : 0,
+      });
+    }
+
+    return result;
+  }
+
   // ============================================
   // REVIEWS
   // ============================================

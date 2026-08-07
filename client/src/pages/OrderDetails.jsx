@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import orderService from '../services/orderService';
 import Loader from '../components/Loader';
+import PaymentButton from '../components/PaymentButton';
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -229,9 +230,10 @@ const OrderDetails = () => {
                   <h5 className="mb-0 fw-bold">Shipping Address</h5>
                 </div>
                 <div className="card-body">
-                  <p className="mb-1">{order.shippingAddress?.street}</p>
+                  <p className="mb-1">{order.shippingAddress?.street || order.shippingAddress?.address || 'N/A'}</p>
                   <p className="mb-1">
-                    {order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.zipCode}
+                    {order.shippingAddress?.city}{order.shippingAddress?.city && ', '}
+                    {order.shippingAddress?.state} {order.shippingAddress?.zipCode || order.shippingAddress?.postalCode}
                   </p>
                   <p className="mb-0">{order.shippingAddress?.country}</p>
                 </div>
@@ -243,9 +245,10 @@ const OrderDetails = () => {
                   <h5 className="mb-0 fw-bold">Billing Address</h5>
                 </div>
                 <div className="card-body">
-                  <p className="mb-1">{order.billingAddress?.street || order.shippingAddress?.street}</p>
+                  <p className="mb-1">{order.billingAddress?.street || order.shippingAddress?.street || order.shippingAddress?.address || 'N/A'}</p>
                   <p className="mb-1">
-                    {order.billingAddress?.city || order.shippingAddress?.city}, {order.billingAddress?.state || order.shippingAddress?.state} {order.billingAddress?.zipCode || order.shippingAddress?.zipCode}
+                    {order.billingAddress?.city || order.shippingAddress?.city}{ (order.billingAddress?.city || order.shippingAddress?.city) && ', ' }
+                    {order.billingAddress?.state || order.shippingAddress?.state} {order.billingAddress?.zipCode || order.shippingAddress?.zipCode || order.shippingAddress?.postalCode}
                   </p>
                   <p className="mb-0">{order.billingAddress?.country || order.shippingAddress?.country}</p>
                 </div>
@@ -283,10 +286,15 @@ const OrderDetails = () => {
                 <span className="text-muted">Method</span>
                 <span className="fw-bold">{order.paymentMethod}</span>
               </div>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between align-items-center mb-3">
                 <span className="text-muted">Status</span>
                 {paymentBadge(order.paymentStatus)}
               </div>
+              {order.paymentMethod === 'Razorpay' && order.paymentStatus === 'pending' && order.orderStatus !== 'cancelled' && (
+                <div className="mt-3 pt-3 border-top">
+                  <PaymentButton order={order} onSuccess={fetchOrder} />
+                </div>
+              )}
             </div>
           </div>
 

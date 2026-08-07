@@ -144,9 +144,10 @@ const AdminOrderDetails = () => {
             <div className="col-sm-6 text-sm-end mt-4 mt-sm-0">
               <h6 className="text-muted text-uppercase fw-bold mb-3 small" style={{ letterSpacing: '1px' }}>Shipping Address</h6>
               <div className="text-dark">
-                {order.shippingAddress.address}<br />
-                {order.shippingAddress.city}, {order.shippingAddress.postalCode}<br />
-                {order.shippingAddress.country}
+                {order.shippingAddress?.street || order.shippingAddress?.address || 'N/A'}<br />
+                {order.shippingAddress?.city}{order.shippingAddress?.city && ', '}
+                {order.shippingAddress?.zipCode || order.shippingAddress?.postalCode}<br />
+                {order.shippingAddress?.country}
               </div>
             </div>
           </div>

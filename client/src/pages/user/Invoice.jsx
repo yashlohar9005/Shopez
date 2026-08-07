@@ -43,7 +43,7 @@ const Invoice = () => {
   return (
     <div className="container py-5 bg-white">
       <div className="d-flex justify-content-between mb-4 d-print-none">
-        <Link to={`/orders/${id}`} className="btn btn-light">
+        <Link to={`/order/${id}`} className="btn btn-light">
           <i className="bi bi-arrow-left"></i> Back
         </Link>
         <button className="btn btn-primary" onClick={() => window.print()}>

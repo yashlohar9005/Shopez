@@ -43,7 +43,7 @@ const AdminProfile = () => {
               <hr className="my-4" />
               
               <div className="d-flex justify-content-center gap-2">
-                <Link to="/profile" className="btn btn-outline-primary shadow-sm w-100">
+                <Link to="/account/settings" className="btn btn-outline-primary shadow-sm w-100">
                   <i className="bi bi-gear me-2"></i> Account Settings
                 </Link>
               </div>

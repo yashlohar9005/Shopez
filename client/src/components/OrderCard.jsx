@@ -6,12 +6,13 @@ const OrderCard = ({ order }) => {
   const orderItems = order.items || order.orderItems || [];
 
   const getStatusColor = (status) => {
-    switch(status) {
-      case 'Processing': return 'bg-warning text-dark';
-      case 'Shipped': return 'bg-info text-dark';
-      case 'Delivered': return 'bg-success';
-      case 'Cancelled': return 'bg-danger';
-      default: return 'bg-secondary';
+    switch(status?.toLowerCase()) {
+      case 'processing':
+      case 'pending': return 'bg-warning text-dark';
+      case 'shipped': return 'bg-info text-dark';
+      case 'delivered': return 'bg-success text-white';
+      case 'cancelled': return 'bg-danger text-white';
+      default: return 'bg-secondary text-white';
     }
   };
 
@@ -43,8 +44,8 @@ const OrderCard = ({ order }) => {
           <span className="fw-bold text-primary">{formattedTotal}</span>
         </div>
         <div className="mt-2 mt-md-0 text-md-end">
-          <span className={`badge ${getStatusColor(order.orderStatus)} p-2`}>
-            {order.orderStatus}
+          <span className={`badge ${getStatusColor(order.orderStatus)} p-2 rounded-pill`}>
+            {order.orderStatus?.toUpperCase()}
           </span>
         </div>
       </div>
